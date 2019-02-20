@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Star Wars RPG Game</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+    <div  id='wrap'>
+        <header>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                        <h1><span class="label label-default">STAR WARS RPG GAME</span></h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+   
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+           <!-- <h3> Battle Zone! </h3>-->
+        </div>
+    </div>
+    <div class="row">
+        <!-- This is the  Area -->
+        <div class="col-lg-4 text-center">
+            <h2><span class="label label-default">Your Jedi</span></h2>
+            <br>
+                <div class="col-lg-12 ">
+                    <div id="yourCharacter">
+                    </div>
+                </div>
+        </div>
+        
+        <div class="col-lg-4 text-center">
+            <button class="waves-effect waves-light btn-danger btn-lg attackBtn text-center" id="attackBtn"> Attack! </button>
+            <br> <br>
+            
+            <!-- This the area where the text gets updated as you play the game -->
+                <div id="selectYour"><h3>Select Your Warrior</h3></div>
+                <div id="enemiesAttack"> </div>
+                <div id="attackText"> </div>
+                <!-- using this tag to create a button and use it to reset -->
+                <br>
+                <div id="gameOver">
+                <!-- <button> </button>   -->    
+                </div>
+        </div>
+           
+        <div class="col-lg-4 text-center"> 
+                <h2><span class="label label-default">Your Opponent</span></h2>
+                <br>
+                <div class="col-lg-12 ">
+                     <!-- This is where your chosen enemy will be dynamically updated -->
+                    <div id="yourEnemy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+        
+            <!-- Battle Zone Area -->
+    <div class="container-fluid gameplaySection">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <!-- Select your champion header -->
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div id="characterList">
+                            <div class="characterContainer characterClick bg-white" data-character-index="0">
+                                <p>Luke SkyWalker</p>
+                                    <img src="assets/images/luke.jpg">
+                                <p>HP: 160</p>
+                            </div>
+                            <div class="characterContainer characterClick bg-white" data-character-index="1">
+                                <p>Yoda</p>
+                                    <img src="assets/images/yoda.jpg">
+                                <p>HP: 130</p>
+                            </div>
+                            <div class="characterContainer characterClick bg-white" data-character-index="2">
+                                <p>Leia</p>
+                                    <img src="assets/images/leia.jpg">
+                                <p>HP: 180</p>
+                            </div>
+                            <div class="characterContainer characterClick bg-white" data-character-index="3">
+                                <p>Darth Vader</p>
+                                    <img src="assets/images/darth.jpg">
+                                <p>HP: 180</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                    <!-- Select your enemy aligned right header -->
+                       <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div id="enemyList">
+                                <p> Enemy list</p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+	        <div id="push"> </div>
+    </div>
+    <script type="text/template" id="chooseTmpl">
+        <div class="selectYour">
+        Select Your Warrior 
+        </div>
+    </script>
+    <script type="text/template" id="chooseTmpl">
+        <div class="enemiesAttack">
+        Select Your Enemy
+        </div>
+    </script>
+        <script type="text/template" id="characterTmpl">
+	    	<div class="characterContainer characterClick <%= background %>" data-character-index="<%= index %>">
+		    	<p><%= character.name %></p>
+			        <img src="<%= character.visual %>">
+			<p>HP: <%= character.healthPoints %></p>
+		</div>
+        </script>
+        <script type="text/template" id="attackTmpl">
+		    <div class="attackText">
+			You attacked <%= gameObj.currentEnemy ? gameObj.currentEnemy.name : gameObj.lastOpponent.name %> for <%= gameObj.yourCurrentAttackPower %> damage! <br>
+			<% if (gameObj.currentEnemy) { %>
+				<%= gameObj.currentEnemy.name %> counter attacked damaging your health by <%= gameObj.currentEnemy.counterAttackPower %>.  
+			<% } %>
+		    </div>
+        </script>
+        <script type="text/template" id="winTmpl">
+		    <div class="attackText">
+			You have defeated <%= lastOpponent.name %> , choose another enemy to fight! 
+		    </div>
+        </script>
+        <script type="text/template" id="lossTmpl">
+		<div class="attackText">
+			<%= gameObj.currentEnemy.name %>  has defeated you! Game Over!!
+		</div>
+        </script>
+        <script type="text/template" id="jediTmpl">
+            <div class="attackText">
+            You have defeated <%= lastOpponent.name %>!  You are now a true Jedi Master! 
+            <br>
+            May the FORCE be with YOU! 
+            </div>
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="assets/javascript/game.js"></script>
+        <script type="text/javascript">
+        </script>
+</body>
+
+</html>
